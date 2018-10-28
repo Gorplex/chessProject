@@ -1,10 +1,17 @@
 #include<gtk/gtk.h>
 #include"chess.h"
 
+#define DEBUG
+
 enum piece chessBoard[8][8];
 enum piece backRow[8] = {2,3,4,5,6,4,3,2};
+int whiteTurn = 1;
 
 GtkWidget *button[8][8];
+
+void pawnMoves(){
+    
+}
 
 void standard_board_setup(enum piece chessBoard[8][8]){
     //set up back row
@@ -47,7 +54,34 @@ void update_buttons(GtkWidget *button[][8]){
     }
 }
 
+static void auto_turn_white(GtkWidget *widget, gpointer data){
+    if(whiteTurn){
+        #ifdef DEBUG
+        printf("White Turn Started\n");
+        #endif
 
+        whiteTurn=0;
+    }else{
+        #ifdef DEBUG
+        printf("Not Whites Turn\n");
+        #endif
+    }
+}
+static void auto_turn_black(GtkWidget *widget, gpointer data){
+    if(!whiteTurn){
+        #ifdef DEBUG
+        printf("Black Turn Started\n");
+        #endif
+
+        
+
+        whiteTurn=1;
+    }else{
+        #ifdef DEBUG
+        printf("Not Blacks Turn\n");
+        #endif
+    }
+}
 
 static void print_hello (GtkWidget *widget,
         gpointer data){
@@ -73,6 +107,16 @@ void gui_setup(){
     gtk_container_add (GTK_CONTAINER (window), grid);
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE);
+    
+    //turn buttons
+    tmpButton = gtk_button_new_with_label("Black");
+    g_signal_connect(tmpButton, "clicked", G_CALLBACK (auto_turn_black), NULL);
+    gtk_grid_attach(GTK_GRID(grid), tmpButton, 0, 10, 2, 1);
+    
+    tmpButton = gtk_button_new_with_label("White");
+    g_signal_connect(tmpButton, "clicked", G_CALLBACK (auto_turn_white), NULL);
+    gtk_grid_attach(GTK_GRID(grid), tmpButton, 0, 11, 2, 1);
+
 
     //lable edges
     tmpString[0] = '1';
