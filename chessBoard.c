@@ -1,5 +1,5 @@
 #include<gtk/gtk.h>
-#include"chess.h"
+#include"chessBoard.h"
 
 #define DEBUG
 
@@ -13,6 +13,31 @@ void pawnMoves(){
     
 }
 
+
+void movePiece(char isWhite){
+    char color=-1;
+    if(isWhite){
+        color=1;
+    }
+    for(int i=0; i<64; i++){
+        switch(chessBoard[i/8][i%8]){
+            case WPAWN:
+                pawnMoves();
+            break;
+            default:
+            break;
+            
+        }
+    }
+}
+
+void moveWhite(){
+    movePiece(1); 
+}
+void moveBlack(){
+    movePiece(0);
+}
+
 void standard_board_setup(enum piece chessBoard[8][8]){
     //set up back row
     for(int i=0; i<8; i++){
@@ -20,7 +45,7 @@ void standard_board_setup(enum piece chessBoard[8][8]){
     }
     //set pawns
     for(int i=0; i<8; i++){
-        chessBoard[i][6] = bpawn;
+        chessBoard[i][6] = BPAWN;
     }
     for(int j=2; j<6;j++){
         for(int i=0; i<8; i++){
@@ -29,7 +54,7 @@ void standard_board_setup(enum piece chessBoard[8][8]){
     }
     //set pawns
     for(int i=0; i<8; i++){
-        chessBoard[i][1] = wpawn;
+        chessBoard[i][1] = WPAWN;
     }
     //set up back row
     for(int i=0; i<8; i++){
